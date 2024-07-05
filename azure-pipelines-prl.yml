@@ -1,0 +1,21 @@
+trigger: [roh-prl]
+pr: none
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  - checkout: self
+    submodules: true
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '16.x'
+  - script: |
+      npm install
+      npm run build-rohprl
+    displayName: 'Quasar Build'
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath: 'dist/spa'
+      artifact: 'dist-spa'
+      publishLocation: 'pipeline'
